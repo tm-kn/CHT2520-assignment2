@@ -58,5 +58,4 @@ Run tests
 .. code:: sh
 
    vagrant ssh
-   make lint
-   make test
+   dj test
