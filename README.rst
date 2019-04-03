@@ -59,3 +59,18 @@ Run tests
 
    vagrant ssh
    dj test
+
+Deployment
+~~~~~~~~~~
+
+This app supports deployment on Heroku with the container stack. To accomplish
+that please use the following command to create a new deployment.
+
+.. code:: sh
+
+   heroku apps:create --region eu --stack container
+   heroku addons:create heroku-postgresql
+   heroku addons:create papertrail
+   heroku addons:create heroku-scheduler
+   heroku config:set SECRET_KEY=[your-secret-key] ALLOWED_HOSTS=*.herokuapp.com
+   git push heroku
