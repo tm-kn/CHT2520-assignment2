@@ -3,11 +3,20 @@ jobs:
   test:
     docker:
       - image: circleci/python:3.6-stretch-node
+        environment:
+          DJANGO_SETTINGS_MODULE=timetracker.settings.production
+          SECRET_KEY=testingsecretkey
+          SECURE_SSL_REDIRECT=false
+          ALLOWED_HOSTS=localhost
     steps:
       - checkout
-      - run: sudo pip install tox
-      - run: tox -e flake8
-      - run: tox -e isort
+      - run:
+          name: install python dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install flake8 isort
+            pip install -r requirements.txt
       - run:
           name: install node dependencies
           command: |
@@ -16,7 +25,16 @@ jobs:
           name: compile static assets
           command: |
             make static
-      - run: tox -e py36
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            flake8 ./timetracker
+            isort --recursive --check-only --diff ./timetracker
+            django-admin collectstatic --clear --noinput
+            django-admin makemigrations --check --noinput
+            django-admin check
+            django-admin test
 workflows:
   version: 2
   build_and_test:
