@@ -2,12 +2,20 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/python:3.6
+      - image: circleci/python:3.6-stretch-node
     steps:
       - checkout
       - run: sudo pip install tox
       - run: tox -e flake8
       - run: tox -e isort
+      - run:
+          name: install node dependencies
+          command: |
+            npm install --quiet
+      - run:
+          name: compile static assets
+          command: |
+            make static
       - run: tox -e py36
 workflows:
   version: 2
