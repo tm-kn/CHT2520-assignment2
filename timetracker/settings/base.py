@@ -22,7 +22,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
+
     'timetracker.activities',
+    'timetracker.sheets',
 ]
 
 MIDDLEWARE = [
