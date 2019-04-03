@@ -27,7 +27,8 @@ RUN npm install
 COPY requirements.txt /
 RUN pip install -r /requirements.txt
 
-COPY --chown=timetracker static .
+COPY --chown=timetracker webpack.config.js .
+COPY --chown=timetracker timetracker/static ./timetracker/static
 RUN npm run build
 
 WORKDIR /app

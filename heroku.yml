@@ -1,0 +1,15 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+    - plan: heroku-scheduler
+    - plan: papertrail
+  config:
+    SECRET_KEY: secret
+    ALLOWED_HOSTS: "*.herokuapp.com"
+build:
+  docker:
+    web: Dockerfile
+release:
+  image: web
+  command:
+    - django-admin createcachetable && django-admin migrate --noinput
