@@ -7,6 +7,13 @@
                 <h1 class="title">{{ _('Time sheets') }}</h1>
             </div>
         </div>
+        <div class="level-right">
+            <div class="level-item">
+                <a class="button is-primary" href="{% url "sheets:create" %}">
+                    {{_('New time sheet')}}
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 <section class="section">
