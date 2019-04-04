@@ -177,3 +177,6 @@ if 'AWS_STORAGE_BUCKET_NAME' in os.environ:
 
 if 'CELERY_BROKER_URL' in os.environ:
     CELERY_BROKER_URL = os.environ['CELERY_BROKER_URL']
+
+if 'BASE_URL' in os.environ:
+    BASE_URL = os.environ['BASE_URL']
