@@ -122,7 +122,8 @@ LOGGING = {
         },
         'sentry': {
             'level': 'ERROR',
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            'class':
+            'raven.contrib.django.raven_compat.handlers.SentryHandler',
         },
     },
     'formatters': {
@@ -193,7 +194,6 @@ if 'AWS_STORAGE_BUCKET_NAME' in os.environ:
                                               's3v4')
 
     AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
-
 
 if 'CELERY_BROKER_URL' in os.environ:
     CELERY_BROKER_URL = os.environ['CELERY_BROKER_URL']
