@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
@@ -10,11 +9,11 @@ class Activity(models.Model):
     """
     Represent a single activity.
     """
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+    sheet = models.ForeignKey(
+        'sheets.TimeSheet',
         models.PROTECT,
         related_name='activities',
-        verbose_name=_('user'))
+        verbose_name=_('time sheet'))
     activity = models.CharField(max_length=255, verbose_name=_('activity'))
     description = models.TextField(blank=True, verbose_name=_('description'))
     project = models.CharField(
@@ -87,7 +86,7 @@ class Activity(models.Model):
         """
         Get a URL to the detail page of this particular object.
         """
-        return reverse('activities:detail', args=[self.id])
+        return reverse('activities:detail', args=[self.sheet_id, self.id])
 
     def is_active(self):
         """

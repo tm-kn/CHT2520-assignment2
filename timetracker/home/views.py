@@ -8,4 +8,4 @@ class HomepageView(LoginRequiredMixin, RedirectView):
 
     If user is not logged in, redirect to the default login page.
     """
-    pattern_name = 'activities:list'
+    pattern_name = 'sheets:list'

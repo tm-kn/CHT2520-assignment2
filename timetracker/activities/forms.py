@@ -11,15 +11,15 @@ class ActivityForm(forms.ModelForm):
     """
 
     def __init__(self, *args, **kwargs):
-        # Take user as an additional keyword argument to set it if
+        # Take sheet as an additional keyword argument to set it if
         # needed.
-        self.user = kwargs.pop('user', None)
+        self.sheet = kwargs.pop('sheet', None)
         super().__init__(*args, **kwargs)
 
     def save(self, commit=True):
         activity = super().save(commit=False)
-        if self.user is not None:
-            activity.user = self.user
+        if self.sheet is not None:
+            activity.sheet = self.sheet
         if commit:
             activity.save()
         return activity

@@ -5,12 +5,12 @@
         <h1 class="title">{{ object.activity }}</h1>
         <div class="field is-grouped is-groupped-multiline">
             <p class="control">
-                <a class="button is-link" href="{% url 'activities:update' activity.pk %}">
+                <a class="button is-link" href="{% url 'activities:update' sheet.pk activity.pk %}">
                     {{_('Edit')}}
                 </a>
             </p>
             <p class="control">
-                <form method="post" action="{% url 'activities:delete' activity.pk %}">
+                <form method="post" action="{% url 'activities:delete' sheet.pk activity.pk %}">
                     {% csrf_token %}
                     <button class="button is-danger js-delete-button">{{_('Delete')}}</button>
                 </form>
@@ -18,7 +18,7 @@
             {% if object.is_active %}
             <p class="control">
                 <div>
-                    <form method="post" action="{% url 'activities:stop' activity.pk %}">
+                    <form method="post" action="{% url 'activities:stop' sheet.pk activity.pk %}">
                         {% csrf_token %}
                         <button class="button is-primary">{{_('Stop')}}</button>
                     </form>

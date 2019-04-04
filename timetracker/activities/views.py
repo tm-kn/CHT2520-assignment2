@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.search import SearchVector
+from django.http import Http404
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.views.generic import View
@@ -13,17 +14,34 @@ from django.views.generic.list import ListView
 
 from timetracker.activities.forms import ActivityFilterForm, ActivityForm
 from timetracker.activities.models import Activity
+from timetracker.sheets.models import TimeSheet
 
 
-class ActivityQuerySetMixin:
+class CurrentSheetMixin:
+    def get_sheet(self):
+        try:
+            return TimeSheet.objects.get(
+                pk=self.kwargs['sheet_pk'], user=self.request.user)
+        except TimeSheet.DoesNotExist:
+            raise Http404
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sheet'] = self.get_sheet()
+        return context
+
+
+class ActivityQuerySetMixin(CurrentSheetMixin):
     """
     Constraint queryset to return activities only created by the
-    current user.
+    current user in the selected sheet.
     """
     model = Activity
 
     def get_queryset(self):
-        return super().get_queryset().filter(user=self.request.user)
+        return super().get_queryset().filter(
+            sheet_id=self.kwargs['sheet_pk'],
+            sheet__user_id=self.request.user.pk).select_related('sheet')
 
 
 class ActivitySingleObjectMixin(ActivityQuerySetMixin, SingleObjectMixin):
@@ -33,23 +51,26 @@ class ActivitySingleObjectMixin(ActivityQuerySetMixin, SingleObjectMixin):
     pass
 
 
-class ActivityCreateView(LoginRequiredMixin, CreateView):
+class ActivityCreateView(CurrentSheetMixin, LoginRequiredMixin, CreateView):
     """
     Create a new activity.
     """
     form_class = ActivityForm
     template_name = 'activities/activity_create.html'
-    success_url = reverse_lazy('activities:list')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs.update({'user': self.request.user})
+        kwargs.update({'sheet': self.get_sheet()})
         return kwargs
 
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, _('Successfuly created an activity.'))
         return response
+
+    def get_success_url(self):
+        return reverse(
+            'activities:list', kwargs={'sheet_pk': self.get_sheet().pk})
 
 
 class ActivityListView(LoginRequiredMixin, ActivityQuerySetMixin, ListView):
@@ -137,16 +158,19 @@ class ActivityStopView(ActivitySingleObjectMixin, View):
         obj = self.get_object()
         obj.stop()
         messages.success(self.request, _('Successfully stopped an activity.'))
-        return redirect('activities:list')
+        return redirect('activities:list', sheet_pk=obj.sheet_id)
 
 
 class ActivityDeleteView(ActivitySingleObjectMixin, DeleteView):
     """
     Delete an activity object.
     """
-    success_url = reverse_lazy('activities:list')
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
         messages.success(self.request, _('Successfully deleted an activity'))
         return response
+
+    def get_success_url(self):
+        return reverse(
+            'activities:list', kwargs={'sheet_pk': self.get_sheet().pk})

@@ -7,7 +7,8 @@ from timetracker.home.views import HomepageView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('timetracker.accounts.urls')),
-    path('activities/',
+    path('sheets/', include('timetracker.sheets.urls')),
+    path('sheets/<int:sheet_pk>/',
          include('timetracker.activities.urls', namespace='activities')),
     path('', HomepageView.as_view(), name='home')
 ]
