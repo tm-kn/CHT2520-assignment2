@@ -10,11 +10,11 @@ class Activity(models.Model):
     """
     Represent a single activity.
     """
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+    sheet = models.ForeignKey(
+        'sheets.TimeSheet',
         models.PROTECT,
         related_name='activities',
-        verbose_name=_('user'))
+        verbose_name=_('time sheet'))
     activity = models.CharField(max_length=255, verbose_name=_('activity'))
     description = models.TextField(blank=True, verbose_name=_('description'))
     project = models.CharField(
