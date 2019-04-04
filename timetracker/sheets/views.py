@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
+from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 from django.views.generic.edit import CreateView, DeleteView
@@ -8,6 +9,20 @@ from django.views.generic.list import ListView
 
 from timetracker.sheets.forms import TimeSheetForm
 from timetracker.sheets.models import TimeSheet
+
+
+class CurrentSheetMixin:
+    def get_sheet(self):
+        try:
+            return TimeSheet.objects.get(
+                pk=self.kwargs['sheet_pk'], user=self.request.user)
+        except TimeSheet.DoesNotExist:
+            raise Http404
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sheet'] = self.get_sheet()
+        return context
 
 
 class CurrentUserTimeSheetQuerySetMixin:
