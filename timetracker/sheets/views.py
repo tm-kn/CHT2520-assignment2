@@ -2,14 +2,18 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.http import Http404
+from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import ugettext as _
-from django.views.generic.detail import SingleObjectTemplateResponseMixin
+from django.views.generic.detail import (DetailView,
+                                         SingleObjectTemplateResponseMixin)
 from django.views.generic.edit import BaseUpdateView, CreateView, DeleteView
 from django.views.generic.list import ListView
 
 from timetracker.sheets.forms import TimeSheetForm
 from timetracker.sheets.models import TimeSheet
+from timetracker.sheets.tasks import generate_csv_file_for_timesheet
 
 
 class CurrentSheetMixin:
@@ -99,3 +103,16 @@ class TimeSheetDeleteView(LoginRequiredMixin,
 
     def get_success_url(self):
         return reverse('sheets:list')
+
+
+class TimeSheetExportView(CurrentUserTimeSheetQuerySetMixin, DetailView):
+    template_name = 'sheets/timesheet_export.html'
+
+    def post(self, *args, **kwargs):
+        self.object = self.get_object()
+        generate_csv_file_for_timesheet.delay(self.object.pk, timezone.now())
+        messages.success(
+            self.request,
+            _('File queued for generation. Check your e-mail '
+              'for a link to a file.'))
+        return redirect('activities:list', sheet_pk=self.object.pk)

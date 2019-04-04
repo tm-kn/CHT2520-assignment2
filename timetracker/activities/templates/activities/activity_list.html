@@ -124,6 +124,11 @@
                     {{_('Rename this time sheet')}}
                 </a>
             </div>
+            <div class="level-item">
+                <a class="button is-secondary" href="{% url "sheets:export" sheet.pk %}">
+                    {{_('Export this time sheet')}}
+                </a>
+            </div>
         </div>
     </div>
 </section>
