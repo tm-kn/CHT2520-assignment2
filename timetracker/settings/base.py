@@ -160,3 +160,17 @@ if os.environ.get('SECURE_BROWSER_XSS_FILTER',
 if os.environ.get('SECURE_CONTENT_TYPE_NOSNIFF',
                   'true').lower().strip() == 'true':
     SECURE_CONTENT_TYPE_NOSNIFF = True
+
+
+if 'AWS_STORAGE_BUCKET_NAME' in os.environ:
+    INSTALLED_APPS.append('storages')
+
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+
+    AWS_QUERYSTRING_AUTH = False
+
+    AWS_S3_FILE_OVERWRITE = False
+
+    AWS_S3_URL_PROTOCOL = os.environ.get('AWS_S3_URL_PROTOCOL', 'https:')
