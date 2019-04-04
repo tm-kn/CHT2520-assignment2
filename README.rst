@@ -85,4 +85,11 @@ that please use the following command to create a new deployment.
                      AWS_SECRET_ACCESS_KEY=[your access key] \
                      AWS_S3_REGION_NAME=eu-west-2
    heroku config:set BASE_URL=https://[your-url]/
+   heroku config:set EMAIL_HOST=smtp.mailgun.org \
+                     EMAIL_PORT=587 \
+                     EMAIL_HOST_PASSWORD=[smtp password] \
+                     EMAIL_HOST_USER=[smtp user] \
+                     EMAIL_USE_TLS=True \
+                     EMAIL_SUBJECT_PREFIX=[timetracker] \
+                     SERVER_EMAIL=no-reply@yourdomain.com
    git push heroku
