@@ -83,7 +83,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = 'activities:list'
+LOGIN_REDIRECT_URL = 'home'
 
 LANGUAGE_CODE = 'en-gb'
 
