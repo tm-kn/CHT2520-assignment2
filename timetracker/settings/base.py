@@ -246,3 +246,10 @@ if 'SENTRY_DSN' in os.environ:
         RAVEN_CONFIG['release'] = raven.fetch_git_sha(BASE_DIR)
     except InvalidGitRepository:
         pass
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
