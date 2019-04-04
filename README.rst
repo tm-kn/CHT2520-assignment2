@@ -77,4 +77,7 @@ that please use the following command to create a new deployment.
    heroku addons:create papertrail
    heroku addons:create heroku-scheduler
    heroku config:set SECRET_KEY=[your-secret-key] ALLOWED_HOSTS=*.herokuapp.com
+   heroku config:set AWS_STORAGE_BUCKET_NAME=[your bucket name] \
+                     AWS_ACCESS_KEY_ID=[your key id] \
+                     AWS_SECRET_ACCESS_KEY=[your access key]
    git push heroku
