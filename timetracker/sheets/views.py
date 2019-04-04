@@ -6,13 +6,15 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext as _
-from django.views.generic.detail import (DetailView,
+from django.views.decorators.cache import never_cache
+from django.views.generic import View
+from django.views.generic.detail import (DetailView, SingleObjectMixin,
                                          SingleObjectTemplateResponseMixin)
 from django.views.generic.edit import BaseUpdateView, CreateView, DeleteView
 from django.views.generic.list import ListView
 
 from timetracker.sheets.forms import TimeSheetForm
-from timetracker.sheets.models import TimeSheet
+from timetracker.sheets.models import TimeSheet, TimeSheetGeneratedFile
 from timetracker.sheets.tasks import generate_csv_file_for_timesheet
 
 
@@ -105,7 +107,7 @@ class TimeSheetDeleteView(LoginRequiredMixin,
         return reverse('sheets:list')
 
 
-class TimeSheetExportView(CurrentUserTimeSheetQuerySetMixin, DetailView):
+class TimeSheetExportView(LoginRequiredMixin, CurrentUserTimeSheetQuerySetMixin, DetailView):
     template_name = 'sheets/timesheet_export.html'
 
     def post(self, *args, **kwargs):
@@ -116,3 +118,18 @@ class TimeSheetExportView(CurrentUserTimeSheetQuerySetMixin, DetailView):
             _('File queued for generation. Check your e-mail '
               'for a link to a file.'))
         return redirect('activities:list', sheet_pk=self.object.pk)
+
+
+class TimeSheetGeneratedFileView(LoginRequiredMixin, CurrentSheetMixin,
+                                 SingleObjectMixin, View):
+    model = TimeSheetGeneratedFile
+
+    def get_queryset(self):
+        return super().get_queryset().filter(sheet_id=self.get_sheet().pk)
+
+    @never_cache
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if not self.object.can_access_file(request):
+            raise Http404
+        return redirect(self.object.file.url)

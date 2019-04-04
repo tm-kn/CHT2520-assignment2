@@ -31,7 +31,6 @@ class TimeSheetGeneratedFile(models.Model):
     def can_access_file(self, request):
         return request.user == self.sheet.user
 
-
 class TimeSheet(models.Model):
     title = models.CharField(max_length=255, verbose_name=_('title'))
     user = models.ForeignKey(
