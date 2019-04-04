@@ -1,7 +1,9 @@
 import logging
+from urllib.parse import urljoin
 
 from django.conf import settings
 from django.core.files.base import ContentFile
+from django.core.mail import send_mail
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -30,6 +32,29 @@ class TimeSheetGeneratedFile(models.Model):
 
     def can_access_file(self, request):
         return request.user == self.sheet.user
+
+    def get_absolute_url(self):
+        return reverse('sheets:exported_file', kwargs={
+            'sheet_pk': self.sheet_id,
+            'pk': self.pk,
+        })
+
+    def send_email_with_file_link(self):
+        user = self.sheet.user
+        file_link = urljoin(
+            settings.BASE_URL,
+            self.get_absolute_url()
+        )
+        send_mail(
+            'Exported time sheet download link',
+            (
+                f'Hi {user},\n\n'
+                'The link to your generated CSV time sheet file is:\n'
+                f'{file_link}'
+            ),
+            settings.DEFAULT_FROM_EMAIL,
+            [user.email],
+        )
 
 
 class TimeSheet(models.Model):
@@ -66,3 +91,4 @@ class TimeSheet(models.Model):
         generated_file.file.save(filename, content_file)
         generated_file.save()
         logger.info('Generated timesheet file "%s"', filename)
+        generated_file.send_email_with_file_link()
