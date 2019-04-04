@@ -111,6 +111,21 @@ MEDIA_ROOT = os.environ.get('MEDIA_DIR', os.path.join(BASE_DIR, 'media'))
 
 MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
 
+if os.environ.get('SECURE_SSL_REDIRECT', 'true').strip().lower() == 'true':
+    SECURE_SSL_REDIRECT = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+if 'SECURE_HSTS_SECONDS' in os.environ:
+    SECURE_HSTS_SECONDS = int(os.environ['SECURE_HSTS_SECONDS'])
+
+if os.environ.get('SECURE_BROWSER_XSS_FILTER', 'true').lower().strip() == 'true':
+    SECURE_BROWSER_XSS_FILTER = True
+
+if os.environ.get('SECURE_CONTENT_TYPE_NOSNIFF', 'true').lower().strip() == 'true':
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
