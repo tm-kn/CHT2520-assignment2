@@ -119,6 +119,11 @@
                     {{_('Delete this time sheet')}}
                 </a>
             </div>
+            <div class="level-item">
+                <a class="button is-secondary" href="{% url "sheets:update" sheet.pk %}">
+                    {{_('Rename this time sheet')}}
+                </a>
+            </div>
         </div>
     </div>
 </section>

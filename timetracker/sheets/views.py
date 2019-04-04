@@ -4,7 +4,8 @@ from django.db import transaction
 from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.detail import SingleObjectTemplateResponseMixin
+from django.views.generic.edit import BaseUpdateView, CreateView, DeleteView
 from django.views.generic.list import ListView
 
 from timetracker.sheets.forms import TimeSheetForm
@@ -26,6 +27,8 @@ class CurrentSheetMixin:
 
 
 class CurrentUserTimeSheetQuerySetMixin:
+    model = TimeSheet
+
     def get_queryset(self):
         return super().get_queryset().filter(user=self.request.user)
 
@@ -59,6 +62,23 @@ class TimeSheetCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return self.object.get_absolute_url()
+
+
+class TimeSheetUpdateView(LoginRequiredMixin,
+                          CurrentUserTimeSheetQuerySetMixin,
+                          SingleObjectTemplateResponseMixin, BaseUpdateView):
+    form_class = TimeSheetForm
+    template_name = 'sheets/timesheet_update.html'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        return kwargs
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request,
+                         _('Successfully created a new time-sheet.'))
+        return response
 
 
 class TimeSheetDeleteView(LoginRequiredMixin,
