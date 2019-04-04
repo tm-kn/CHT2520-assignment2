@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.http import Http404
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.views.generic.detail import (DetailView,
                                          SingleObjectTemplateResponseMixin)
@@ -108,4 +109,4 @@ class TimeSheetExportView(CurrentUserTimeSheetQuerySetMixin, DetailView):
 
     def post(self, *args, **kwargs):
         self.object = self.get_object()
-        generate_csv_file_for_timesheet.delay(self.object.pk, None)
+        generate_csv_file_for_timesheet.delay(self.object.pk, timezone.now())
