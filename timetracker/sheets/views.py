@@ -57,6 +57,7 @@ class TimeSheetDeleteView(LoginRequiredMixin,
         self.object = self.get_object()
         with transaction.atomic():
             self.object.activities.all().delete()
+            self.object.projects.all().delete()
             response = super().delete(request, *args, **kwargs)
         messages.success(self.request, _('Successfully deleted a time sheet.'))
         return response
