@@ -25,6 +25,7 @@ The VM comes with aliases:
 
 -  ``dj`` - shortcut to ``django-admin``
 -  ``djrun`` - shortcut to ``django-admin runserver 0:8000``
+-  ``djcelery`` - to start the Celery process.
 
 Create database and superuser
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

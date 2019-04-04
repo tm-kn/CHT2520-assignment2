@@ -30,6 +30,7 @@ export DATABASE_URL=postgres:///$PROJECT_NAME
 
 alias dj="django-admin.py"
 alias djrun="dj runserver 0.0.0.0:8000"
+alias djcelery="celery -A timetracker worker -l info"
 
 source $VIRTUALENV_DIR/bin/activate
 export PS1="[$PROJECT_NAME \W]\\$ "
