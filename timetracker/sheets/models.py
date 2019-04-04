@@ -1,4 +1,5 @@
 import logging
+import io
 from urllib.parse import urljoin
 
 from django.conf import settings
@@ -83,12 +84,12 @@ class TimeSheet(models.Model):
 
         if end_datetime is not None:
             activities = activities.filter(end_datetime__lte=end_datetime)
-        content_file = ContentFile('')
+        buffer_object = io.StringIO()
         filename = f'timesheet-{self.pk}-{slugify(self.title)}' \
                    f'-{slugify(end_datetime or timezone.now())}.csv'
-        generate_timesheet_csv(content_file, self, activities)
+        generate_timesheet_csv(buffer_object, self, activities)
         generated_file = TimeSheetGeneratedFile(sheet=self)
-        generated_file.file.save(filename, content_file)
+        generated_file.file.save(filename, buffer_object)
         generated_file.save()
         logger.info('Generated timesheet file "%s"', filename)
         generated_file.send_email_with_file_link()
