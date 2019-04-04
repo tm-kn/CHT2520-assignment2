@@ -25,6 +25,7 @@ The VM comes with aliases:
 
 -  ``dj`` - shortcut to ``django-admin``
 -  ``djrun`` - shortcut to ``django-admin runserver 0:8000``
+-  ``djcelery`` - to start the Celery process.
 
 Create database and superuser
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,6 +77,7 @@ that please use the following command to create a new deployment.
    heroku addons:create heroku-postgresql
    heroku addons:create papertrail
    heroku addons:create heroku-scheduler
+   heroku addons:add heroku-redis --as CELERY_BROKER
    heroku config:set SECRET_KEY=[your-secret-key] ALLOWED_HOSTS=*.herokuapp.com
    heroku config:set AWS_STORAGE_BUCKET_NAME=[your bucket name] \
                      AWS_ACCESS_KEY_ID=[your key id] \
