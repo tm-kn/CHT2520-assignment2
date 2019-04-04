@@ -1,11 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import ugettext as _
-from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
+from django.views.generic.list import ListView
 
-from timetracker.sheets.models import TimeSheet
 from timetracker.sheets.forms import TimeSheetForm
+from timetracker.sheets.models import TimeSheet
 
 
 class TimeSheetListView(LoginRequiredMixin, ListView):
