@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.search import SearchVector
-from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils import timezone
@@ -14,21 +13,7 @@ from django.views.generic.list import ListView
 
 from timetracker.activities.forms import ActivityFilterForm, ActivityForm
 from timetracker.activities.models import Activity
-from timetracker.sheets.models import TimeSheet
-
-
-class CurrentSheetMixin:
-    def get_sheet(self):
-        try:
-            return TimeSheet.objects.get(
-                pk=self.kwargs['sheet_pk'], user=self.request.user)
-        except TimeSheet.DoesNotExist:
-            raise Http404
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['sheet'] = self.get_sheet()
-        return context
+from timetracker.sheets.views import CurrentSheetMixin
 
 
 class ActivityQuerySetMixin(CurrentSheetMixin):
@@ -65,7 +50,7 @@ class ActivityCreateView(CurrentSheetMixin, LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, _('Successfuly created an activity.'))
+        messages.success(self.request, _('Successfully created an activity.'))
         return response
 
     def get_success_url(self):
@@ -75,7 +60,7 @@ class ActivityCreateView(CurrentSheetMixin, LoginRequiredMixin, CreateView):
 
 class ActivityListView(LoginRequiredMixin, ActivityQuerySetMixin, ListView):
     """
-    List and serach the activities.
+    List and search the activities.
     """
 
     def get_queryset(self):

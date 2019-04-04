@@ -10,6 +10,8 @@ urlpatterns = [
     path('sheets/', include('timetracker.sheets.urls')),
     path('sheets/<int:sheet_pk>/',
          include('timetracker.activities.urls', namespace='activities')),
+    path('sheets/<int:sheet_pk>/projects/',
+         include('timetracker.projects.urls', namespace='projects')),
     path('', HomepageView.as_view(), name='home')
 ]
 

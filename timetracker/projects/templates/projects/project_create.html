@@ -1,8 +1,14 @@
 {% extends "base.html" %}
+{% load i18n %}
+
 {% block content %}
 <section class="section">
     <div class="container">
-        <h1 class="title">{{_('Create new activity')}}</h1>
+        <h1 class="title">
+            {% blocktrans with sheet_name=sheet.title %}
+            Create a new project for &ldquo;{{ sheet_name }}&rdquo;
+            {% endblocktrans %}
+        </h1>
         <form method="post">
             {% csrf_token %}
             {% for field in form %}
@@ -10,11 +16,6 @@
                 {{ field.label_tag }}
                 <p class="control">
                     {{ field }}
-                    {% if field.name == 'project' %}
-                    <a href="{% url "projects:create" sheet.pk %}?next={{ request.path }}">
-                        {{ _("Create a new project") }}
-                    </a>
-                    {% endif %}
                 </p>
                 <p class="help">{{ field.help_text }}</p>
                 {% for error in field.errors %}
@@ -22,9 +23,15 @@
                 {% endfor %}
             </div>
             {% endfor %}
+
+            <input type="hidden" name="next" value="{{ back_url }}" />
+
             <div class="field">
                 <p class="control">
-                    <input class="button is-primary" type="submit" value="{{_('Add activity')}}">
+                    <input class="button is-primary" type="submit" value="{{_('Create project')}}">
+                    <a href="{{ back_url }}" class="button is-secondary">
+                        {{_('Cancel') }}
+                    </a>
                 </p>
             </div>
         </form>
