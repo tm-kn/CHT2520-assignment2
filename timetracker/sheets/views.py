@@ -107,7 +107,8 @@ class TimeSheetDeleteView(LoginRequiredMixin,
         return reverse('sheets:list')
 
 
-class TimeSheetExportView(LoginRequiredMixin, CurrentUserTimeSheetQuerySetMixin, DetailView):
+class TimeSheetExportView(LoginRequiredMixin,
+                          CurrentUserTimeSheetQuerySetMixin, DetailView):
     template_name = 'sheets/timesheet_export.html'
 
     def post(self, *args, **kwargs):
