@@ -3,7 +3,6 @@ import io
 from urllib.parse import urljoin
 
 from django.conf import settings
-from django.core.files.base import ContentFile
 from django.core.mail import send_mail
 from django.db import models
 from django.urls import reverse
