@@ -4,6 +4,10 @@ time tracker
 This is a web application of a web tracker written in Python using the Django
 web framework.
 
+The app is live at http://quiet-crag-93436.herokuapp.com/.
+Student ID - 1562595.
+
+
 Set up local environment
 ------------------------
 
