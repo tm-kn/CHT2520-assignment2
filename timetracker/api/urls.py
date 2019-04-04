@@ -1,4 +1,5 @@
 from django.urls import include, path
+
 from timetracker.api.views import root
 
 app_name = 'api'

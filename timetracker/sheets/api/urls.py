@@ -1,7 +1,6 @@
 from django.urls import path
 
-from timetracker.sheets.api.views import (PerProjectStatisticsView,
-                                          sheets_root)
+from timetracker.sheets.api.views import PerProjectStatisticsView, sheets_root
 
 app_name = 'sheets'
 
