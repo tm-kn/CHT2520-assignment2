@@ -143,6 +143,11 @@ class ActivityUpdateView(LoginRequiredMixin, ActivitySingleObjectMixin,
     form_class = ActivityForm
     template_name = 'activities/activity_update.html'
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'sheet': self.get_sheet()})
+        return kwargs
+
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, _('Successfully updated an activity.'))

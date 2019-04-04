@@ -13,8 +13,10 @@ class ActivityForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         # Take sheet as an additional keyword argument to set it if
         # needed.
-        self.sheet = kwargs.pop('sheet', None)
+        self.sheet = kwargs.pop('sheet')
         super().__init__(*args, **kwargs)
+        self.fields['project'].queryset = (
+            self.fields['project'].queryset.filter(sheet_id=self.sheet.pk))
 
     def save(self, commit=True):
         activity = super().save(commit=False)

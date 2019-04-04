@@ -16,8 +16,11 @@ class Activity(models.Model):
         verbose_name=_('time sheet'))
     activity = models.CharField(max_length=255, verbose_name=_('activity'))
     description = models.TextField(blank=True, verbose_name=_('description'))
-    project = models.CharField(
-        max_length=255, db_index=True, verbose_name=_('project'))
+    project = models.ForeignKey(
+        'projects.Project',
+        models.PROTECT,
+        related_name='+',
+        verbose_name=_('project'))
     start_datetime = models.DateTimeField(
         default=timezone.now, verbose_name=_('start time'))
     end_datetime = models.DateTimeField(
