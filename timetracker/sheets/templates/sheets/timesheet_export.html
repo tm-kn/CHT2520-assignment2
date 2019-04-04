@@ -12,6 +12,13 @@
         <h2 class="subtitle">
             {{ _("Export the time sheet to an external file.") }}
         </h2>
+        <div class="content">
+            <p>
+                {% blocktrans with email=request.user.email %}
+                Link to the file will be sent to your email - <strong>{{ email }}</strong> - when it is ready.
+                {% endblocktrans %}
+            </p>
+        </div>
         <form method="post">
             {% csrf_token %}
             <div class="field">
