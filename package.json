@@ -5,7 +5,8 @@
   "private": true,
   "dependencies": {
     "bulma": "^0.7.2",
-    "flatpickr": "^4.5.2"
+    "flatpickr": "^4.5.2",
+    "highcharts": "^7.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -19,7 +20,8 @@
     "webpack-cli": "^3.2.1"
   },
   "scripts": {
-    "build": "webpack -p"
+    "build": "webpack -p",
+    "start": "webpack -d --watch --progress"
   },
   "repository": {
     "type": "git",

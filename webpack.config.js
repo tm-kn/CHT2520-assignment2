@@ -45,5 +45,5 @@ module.exports = {
         alias: {
             '@components': path.join(JS_DIR, 'components'),
         }
-    }
+    },
 };
