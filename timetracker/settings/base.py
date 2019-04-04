@@ -180,3 +180,30 @@ if 'CELERY_BROKER_URL' in os.environ:
 
 if 'BASE_URL' in os.environ:
     BASE_URL = os.environ['BASE_URL']
+
+if 'EMAIL_HOST' in os.environ:
+    EMAIL_HOST = os.environ['EMAIL_HOST']
+
+if 'EMAIL_PORT' in os.environ:
+    try:
+        EMAIL_PORT = int(os.environ['EMAIL_PORT'])
+    except ValueError:
+        pass
+
+if 'EMAIL_HOST_USER' in os.environ:
+    EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+
+if 'EMAIL_HOST_PASSWORD' in os.environ:
+    EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+
+if os.environ.get('EMAIL_USE_TLS', 'false').lower().strip() == 'true':
+    EMAIL_USE_TLS = True
+
+if os.environ.get('EMAIL_USE_SSL', 'false').lower().strip() == 'true':
+    EMAIL_USE_SSL = True
+
+if 'EMAIL_SUBJECT_PREFIX' in os.environ:
+    EMAIL_SUBJECT_PREFIX = os.environ['EMAIL_SUBJECT_PREFIX']
+
+if 'SERVER_EMAIL' in os.environ:
+    SERVER_EMAIL = DEFAULT_FROM_EMAIL = os.environ['SERVER_EMAIL']
