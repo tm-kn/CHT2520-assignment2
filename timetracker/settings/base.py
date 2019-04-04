@@ -1,6 +1,8 @@
 import os
 
 import dj_database_url
+import raven
+from raven.exceptions import InvalidGitRepository
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -118,6 +120,10 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
     },
     'formatters': {
         'verbose': {
@@ -127,18 +133,22 @@ LOGGING = {
     },
     'loggers': {
         'timetracker': {
-            'handlers': ['console'],
+            'handlers': ['console', 'sentry'],
             'level': 'INFO',
             'propagate': False,
         },
         'django.request': {
-            'handlers': ['console'],
+            'handlers': ['console', 'sentry'],
             'level': 'ERROR',
             'propagate': False,
         },
         'django.security': {
-            'handlers': ['console'],
+            'handlers': ['console', 'sentry'],
             'level': 'WARNING',
+            'propagate': False,
+        },
+        'django.security.DisallowedHost': {
+            'handlers': ['console'],
             'propagate': False,
         },
     },
@@ -217,3 +227,18 @@ if 'EMAIL_SUBJECT_PREFIX' in os.environ:
 
 if 'SERVER_EMAIL' in os.environ:
     SERVER_EMAIL = DEFAULT_FROM_EMAIL = os.environ['SERVER_EMAIL']
+
+if 'SENTRY_DSN' in os.environ:
+    INSTALLED_APPS.append('raven.contrib.django.raven_compat')
+
+    RAVEN_CONFIG = {
+        'dsn': os.environ['SENTRY_DSN'],
+        'tags': {},
+    }
+
+    RAVEN_CONFIG['tags']['lang'] = 'python'
+
+    try:
+        RAVEN_CONFIG['release'] = raven.fetch_git_sha(BASE_DIR)
+    except InvalidGitRepository:
+        pass
