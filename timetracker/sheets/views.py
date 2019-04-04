@@ -11,6 +11,7 @@ from django.views.generic.list import ListView
 
 from timetracker.sheets.forms import TimeSheetForm
 from timetracker.sheets.models import TimeSheet
+from timetracker.sheets.tasks import generate_csv_file_for_timesheet
 
 
 class CurrentSheetMixin:
@@ -104,3 +105,7 @@ class TimeSheetDeleteView(LoginRequiredMixin,
 
 class TimeSheetExportView(CurrentUserTimeSheetQuerySetMixin, DetailView):
     template_name = 'sheets/timesheet_export.html'
+
+    def post(self, *args, **kwargs):
+        self.object = self.get_object()
+        generate_csv_file_for_timesheet.delay(self.object.pk, None)
