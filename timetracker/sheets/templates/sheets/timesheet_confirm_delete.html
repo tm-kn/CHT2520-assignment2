@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="title">{{_('Delete time sheet')}}</h1>
+        <p>Do you definitely want to delete the time sheet? All data will be lost.</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="field">
+                <p class="control">
+                    <a href="{% url 'sheets:list' %}" class="button is-secondary">
+                        {{_('Go back')}}
+                    </a>
+                    <input class="button is-danger" type="submit" value="{{_('Delete the time sheet')}}">
+                </p>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

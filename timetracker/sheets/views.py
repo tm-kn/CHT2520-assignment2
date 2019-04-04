@@ -1,14 +1,22 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
+from django.urls import reverse
 from django.utils.translation import ugettext as _
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic.list import ListView
 
 from timetracker.sheets.forms import TimeSheetForm
 from timetracker.sheets.models import TimeSheet
 
 
-class TimeSheetListView(LoginRequiredMixin, ListView):
+class CurrentUserTimeSheetQuerySetMixin:
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+
+
+class TimeSheetListView(LoginRequiredMixin, CurrentUserTimeSheetQuerySetMixin,
+                        ListView):
     """
     List user's time sheets.
     """
@@ -36,3 +44,22 @@ class TimeSheetCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return self.object.get_absolute_url()
+
+
+class TimeSheetDeleteView(LoginRequiredMixin,
+                          CurrentUserTimeSheetQuerySetMixin, DeleteView):
+    """
+    Delete a time sheet  object.
+    """
+    model = TimeSheet
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        with transaction.atomic():
+            self.object.activities.all().delete()
+            response = super().delete(request, *args, **kwargs)
+        messages.success(self.request, _('Successfully deleted a time sheet.'))
+        return response
+
+    def get_success_url(self):
+        return reverse('sheets:list')
