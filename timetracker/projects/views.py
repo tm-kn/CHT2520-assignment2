@@ -6,8 +6,8 @@ from django.utils.http import is_safe_url
 from django.utils.translation import ugettext as _
 from django.views.generic.edit import CreateView
 
-from timetracker.sheets.views import CurrentSheetMixin
 from timetracker.projects.forms import ProjectForm
+from timetracker.sheets.views import CurrentSheetMixin
 
 
 class ProjectCreateView(CurrentSheetMixin, LoginRequiredMixin,

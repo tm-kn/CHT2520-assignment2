@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404
 from django.db import transaction
+from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 from django.views.generic.edit import CreateView, DeleteView
