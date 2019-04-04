@@ -1,7 +1,8 @@
 from django.urls import path
 
 # yapf: disable
-from timetracker.activities.views import (ActivityCreateView,
+from timetracker.activities.views import (ActivityChartView,
+                                          ActivityCreateView,
                                           ActivityDeleteView,
                                           ActivityDetailView, ActivityListView,
                                           ActivityStopView, ActivityUpdateView)
@@ -17,4 +18,5 @@ urlpatterns = [
     path('<int:pk>/stop/', ActivityStopView.as_view(), name='stop'),
     path('create/', ActivityCreateView.as_view(), name='create'),
     path('<int:pk>/delete/', ActivityDeleteView.as_view(), name='delete'),
+    path('chart/', ActivityChartView.as_view(), name='chart'),
 ]

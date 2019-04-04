@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext as _
-from django.views.generic import View
+from django.views.generic import TemplateView, View
 from django.views.generic.detail import (DetailView, SingleObjectMixin,
                                          SingleObjectTemplateResponseMixin)
 from django.views.generic.edit import BaseUpdateView, CreateView, DeleteView
@@ -164,3 +164,7 @@ class ActivityDeleteView(ActivitySingleObjectMixin, DeleteView):
     def get_success_url(self):
         return reverse(
             'activities:list', kwargs={'sheet_pk': self.get_sheet().pk})
+
+
+class ActivityChartView(LoginRequiredMixin, CurrentSheetMixin, TemplateView):
+    template_name = "activities/activity_chart.html"
