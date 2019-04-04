@@ -111,5 +111,16 @@
         {% endif %}
     </div>
 </section>
+<section class="section">
+    <div class="container level">
+        <div class="level-right">
+            <div class="level-item">
+                <a class="button is-danger" href="{% url "sheets:delete" sheet.pk %}">
+                    {{_('Delete this time sheet')}}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock %}
