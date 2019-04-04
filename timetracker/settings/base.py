@@ -175,6 +175,8 @@ if 'AWS_STORAGE_BUCKET_NAME' in os.environ:
 
     AWS_S3_URL_PROTOCOL = os.environ.get('AWS_S3_URL_PROTOCOL', 'https:')
 
+    AWS_DEFAULT_ACL = None
+
 if 'CELERY_BROKER_URL' in os.environ:
     CELERY_BROKER_URL = os.environ['CELERY_BROKER_URL']
 
