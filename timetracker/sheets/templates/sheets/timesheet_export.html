@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="title">
+            {% blocktrans with sheet_name=object.title %}
+            Export time sheet &ldquo;{{ sheet_name }}&rdquo;
+            {% endblocktrans %}
+        </h1>
+        <h2 class="subtitle">
+            {{ _("Export the time sheet to an external file.") }}
+        </h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="field">
+                <p class="control">
+                    <input class="button is-primary" type="submit"
+                        value="{{_('Generate CSV file')}}">
+                    <a class="button is-secondary" href="{% url "activities:list" object.pk %}">
+                        {{ _("Go back") }}
+                    </a>
+                </p>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

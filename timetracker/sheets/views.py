@@ -4,7 +4,8 @@ from django.db import transaction
 from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-from django.views.generic.detail import SingleObjectTemplateResponseMixin
+from django.views.generic.detail import (DetailView,
+                                         SingleObjectTemplateResponseMixin)
 from django.views.generic.edit import BaseUpdateView, CreateView, DeleteView
 from django.views.generic.list import ListView
 
@@ -99,3 +100,7 @@ class TimeSheetDeleteView(LoginRequiredMixin,
 
     def get_success_url(self):
         return reverse('sheets:list')
+
+
+class TimeSheetExportView(CurrentUserTimeSheetQuerySetMixin, DetailView):
+    template_name = 'sheets/timesheet_export.html'
