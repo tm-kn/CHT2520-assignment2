@@ -15,4 +15,4 @@ class Project(models.Model):
         verbose_name_plural = _('projects')
 
     def __str__(self):
-        return self.title
+        return self.name
