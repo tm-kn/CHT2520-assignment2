@@ -7,3 +7,4 @@ celery==4.3.0
 redis==3.2.1
 boto3==1.9.128
 raven==6.10.0
+djangorestframework==3.9.2
