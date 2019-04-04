@@ -9,7 +9,7 @@
         </div>
         <div class="level-right">
             <div class="level-item">
-                <a class="button is-primary" href="{% url "activities:create" %}">
+                <a class="button is-primary" href="{% url "activities:create" sheet.pk %}">
                     {{_('New activity')}}
                 </a>
             </div>
@@ -81,12 +81,12 @@
                         </a>
                     </td>
                     <td>
-                        <a class="button is-link" href="{% url 'activities:update' activity.pk %}">
+                        <a class="button is-link" href="{% url 'activities:update' sheet.pk activity.pk %}">
                             {{_('Edit')}}
                         </a>
                     </td>
                     <td>
-                        <form method="post" action="{% url 'activities:delete' activity.pk %}">
+                        <form method="post" action="{% url 'activities:delete' sheet.pk activity.pk %}">
                             {% csrf_token %}
                             <button class="button is-danger js-delete-button">{{_('Delete')}}</button>
                         </form>
@@ -94,7 +94,7 @@
                     <td>
                         {% if activity.is_active %}
                             <div>
-                                <form method="post" action="{% url 'activities:stop' activity.pk %}">
+                                <form method="post" action="{% url 'activities:stop' sheet.pk activity.pk %}">
                                     {% csrf_token %}
                                     <button class="button is-primary">{{_('Stop')}}</button>
                                 </form>

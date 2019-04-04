@@ -87,7 +87,7 @@ class Activity(models.Model):
         """
         Get a URL to the detail page of this particular object.
         """
-        return reverse('activities:detail', args=[self.id])
+        return reverse('activities:detail', args=[self.sheet_id, self.id])
 
     def is_active(self):
         """
