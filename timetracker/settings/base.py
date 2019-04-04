@@ -31,6 +31,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'django_referrer_policy.middleware.ReferrerPolicyMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -125,6 +126,8 @@ if os.environ.get('SECURE_BROWSER_XSS_FILTER', 'true').lower().strip() == 'true'
 if os.environ.get('SECURE_CONTENT_TYPE_NOSNIFF', 'true').lower().strip() == 'true':
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
+REFERRER_POLICY = os.environ.get('SECURE_REFERRER_POLICY',
+                                 'strict-origin').strip()
 
 LOGGING = {
     'version': 1,
