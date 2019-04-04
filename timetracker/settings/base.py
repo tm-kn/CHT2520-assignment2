@@ -120,10 +120,12 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 if 'SECURE_HSTS_SECONDS' in os.environ:
     SECURE_HSTS_SECONDS = int(os.environ['SECURE_HSTS_SECONDS'])
 
-if os.environ.get('SECURE_BROWSER_XSS_FILTER', 'true').lower().strip() == 'true':
+if os.environ.get('SECURE_BROWSER_XSS_FILTER',
+                  'true').lower().strip() == 'true':
     SECURE_BROWSER_XSS_FILTER = True
 
-if os.environ.get('SECURE_CONTENT_TYPE_NOSNIFF', 'true').lower().strip() == 'true':
+if os.environ.get('SECURE_CONTENT_TYPE_NOSNIFF',
+                  'true').lower().strip() == 'true':
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
 REFERRER_POLICY = os.environ.get('SECURE_REFERRER_POLICY',
