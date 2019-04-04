@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1 class="title">{{_('Create new time sheet')}}</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="field ">
+                {{ field.label_tag }}
+                <p class="control">
+                    {{ field }}
+                </p>
+                <p class="help">{{ field.help_text }}</p>
+                {% for error in field.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            <div class="field">
+                <p class="control">
+                    <input class="button is-primary" type="submit" value="{{_('Create time sheet')}}">
+                </p>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
