@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
-
     'timetracker.activities',
     'timetracker.projects',
     'timetracker.sheets.apps.SheetsConfig',
@@ -161,7 +160,6 @@ if os.environ.get('SECURE_CONTENT_TYPE_NOSNIFF',
                   'true').lower().strip() == 'true':
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
-
 if 'AWS_STORAGE_BUCKET_NAME' in os.environ:
     INSTALLED_APPS.append('storages')
 
@@ -171,11 +169,21 @@ if 'AWS_STORAGE_BUCKET_NAME' in os.environ:
 
     AWS_QUERYSTRING_AUTH = False
 
+    AWS_DEFAULT_ACL = None
+
     AWS_S3_FILE_OVERWRITE = False
+
+    AWS_QUERYSTRING_AUTH = True
+
+    AWS_QUERYSTRING_EXPIRE = 120
 
     AWS_S3_URL_PROTOCOL = os.environ.get('AWS_S3_URL_PROTOCOL', 'https:')
 
-    AWS_DEFAULT_ACL = None
+    AWS_S3_SIGNATURE_VERSION = os.environ.get('AWS_S3_SIGNATURE_VERSION',
+                                              's3v4')
+
+    AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
+
 
 if 'CELERY_BROKER_URL' in os.environ:
     CELERY_BROKER_URL = os.environ['CELERY_BROKER_URL']
