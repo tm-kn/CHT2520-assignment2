@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from django.utils import timezone
 
 from rest_framework import serializers
@@ -13,7 +15,8 @@ class TimeSheetSerializer(serializers.ModelSerializer):
 class PerProjectStatisticsSerializer(TimeSheetSerializer):
     start_date = serializers.SerializerMethodField()
     end_date = serializers.SerializerMethodField()
-    activities = serializers.SerializerMethodField()
+    projects = serializers.SerializerMethodField()
+    days = serializers.SerializerMethodField()
 
     def get_start_date(self, obj):
         # Get Monday
@@ -23,8 +26,14 @@ class PerProjectStatisticsSerializer(TimeSheetSerializer):
     def get_end_date(self, obj):
         return self.get_start_date(obj) + timezone.timedelta(days=6)
 
-    def get_activities(self, obj):
-        days = []
+    def get_days(self, obj):
+        date = self.get_start_date(obj)
+        while date <= self.get_end_date(obj):
+            yield date
+            date += timezone.timedelta(days=1)
+
+    def get_projects(self, obj):
+        projects = {}
         date = self.get_start_date(obj)
 
         while date <= self.get_end_date(obj):
@@ -33,26 +42,32 @@ class PerProjectStatisticsSerializer(TimeSheetSerializer):
                 start_datetime__gte=date,
                 start_datetime__lt=next_day,
             ).select_related('project')
-            projects = {}
             for activity in activities:
                 if activity.project_id not in projects:
                     projects[activity.project_id] = {
+                        'id': activity.project_id,
                         'title': activity.project.name,
-                        'date': date,
-                        'duration_seconds': 0,
+                        'days': OrderedDict(),
                     }
-                projects[activity.project_id]['duration_seconds'] += (
+                for day in self.get_days(obj):
+                    if day.isoformat() not in projects[activity.project_id]['days']:
+                        projects[activity.project_id]['days'][day.isoformat()] = {
+                            'date': day.isoformat(),
+                            'duration_seconds': 0
+                        }
+
+                projects[activity.project_id]['days'][date.isoformat()]['duration_seconds'] += (
                     activity.duration.seconds)
-            days.append({
-                'date': date,
-                'projects': projects,
-            })
             date = next_day
-        return days
+
+        for project in projects.values():
+            project['days'] = project['days'].values()
+        return projects.values()
 
     class Meta(TimeSheetSerializer.Meta):
         fields = (
             'start_date',
             'end_date',
-            'activities',
+            'days',
+            'projects',
         )

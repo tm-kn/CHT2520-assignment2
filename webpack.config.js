@@ -9,6 +9,7 @@ const OUTPUT_JS_DIR = path.join(path.resolve(__dirname), 'static_compiled', 'js'
 module.exports = {
     entry: [
         path.join(SCSS_DIR, 'main.scss'),
+        "@babel/polyfill",
         path.join(JS_DIR, 'index.js'),
     ],
     output: {

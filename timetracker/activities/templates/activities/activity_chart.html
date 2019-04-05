@@ -1,10 +1,16 @@
 {% extends "base.html" %}
+{% load i18n %}
+
 {% block content %}
 <section class="section">
     <div class="container level">
         <div class="level-left">
             <div classs="level-item">
-                <h1 class="title">{{ _('Activities') }}</h1>
+                <h1 class="title">
+                    {% blocktrans with sheet_name=sheet.title %}
+                    Statistics for &ldquo;{{ sheet_name }}&rdquo;
+                    {% endblocktrans %}
+                </h1>
             </div>
         </div>
         <div class="level-right">
@@ -19,7 +25,7 @@
 <section class="section">
     <div class="container">
         <div class="content">
-            <h3>Per project hours</h3>
+            <h3>{{ _('Hours per project this week') }}</h3>
             <div id="js-per-project-chart" data-api-url="{% url "api:sheets:per-project-statistics" sheet.pk %}"></div>
         </div>
     </div>
