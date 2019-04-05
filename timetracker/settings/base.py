@@ -39,6 +39,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django_referrer_policy.middleware.ReferrerPolicyMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sites.middleware.CurrentSiteMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
