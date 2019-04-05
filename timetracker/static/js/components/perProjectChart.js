@@ -21,6 +21,14 @@ function getDurationFromMinutes(rawMinutes) {
     return `${hours}h ${minutes}min.`;
 }
 
+function displayNoDataMessage(container) {
+    const div = document.createElement('div');
+    const paragraph = document.createElement('p');
+    paragraph.appendChild(document.createTextNode('No data to create a visualisation'));
+    div.appendChild(paragraph);
+    container.appendChild(div);
+}
+
 function setupChart(container, data) {
     const projects = [];
 
@@ -67,6 +75,10 @@ export default async function() {
     const chartContainer = document.querySelector('#js-per-project-chart');
     if (chartContainer) {
         const data = await getData(chartContainer.dataset.apiUrl);
-        setupChart(chartContainer, data);
+        if (data && data.projects && data.projects.length !== 0) {
+            setupChart(chartContainer, data);
+        } else {
+            displayNoDataMessage(chartContainer);
+        }
     }
 }
