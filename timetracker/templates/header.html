@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <header>
     <nav class="navbar" role="navigation">
         <div class="navbar-brand">
@@ -11,10 +13,30 @@
         <div id="main-navbar-items" class="navbar-menu">
             <div class="navbar-start">
                 <a href="{% url 'home' %}" class="navbar-item">{{_('Home')}}</a>
+            </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
                 {% if request.user.is_authenticated %}
-                <a href="{% url 'logout' %}" class="navbar-item">{{_('Log out')}}</a>
+                <div class="navbar-item">
+                    <p>
+                        {% blocktrans with username=request.user.username %}
+                        Logged in as {{ username }}
+                        {% endblocktrans %}
+                    </p>
+                </div>
+                <div class="navbar-items">
+                    <div class="buttons">
+                        <a href="{% url 'logout' %}" class="button is-secondary">{{_('Log out')}}</a>
+                    </div>
+                </div>
                 {% else %}
-                <a href="{% url 'login' %}" class="navbar-item">{{_('Log in')}}</a>
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a href="{% url 'register' %}" class="button is-primary">{{_('Register')}}</a>
+                        <a href="{% url 'login' %}" class="button is-secondary">{{_('Log in')}}</a>
+                    </div>
+                </div>
                 {% endif %}
             </div>
         </div>
