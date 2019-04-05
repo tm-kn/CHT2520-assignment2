@@ -1,23 +1,21 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.reverse import reverse
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 from timetracker.sheets.models import TimeSheet
-from timetracker.sheets.api.serializers import PerProjectStatisticsSerializer
+
+from timetracker.sheets.api.serializers import (  # isort:skip
+    HoursPerProjectStatisticsSerializer, TimeSheetSerializer)
 
 
-@api_view(['GET'])
-def sheets_root(request):
-    return Response({
-        'per-project-statistics':
-        reverse('api:sheets:per-project-statistics', request=request),
-    })
+class TimeSheetListView(ListAPIView):
+    serializer_class = TimeSheetSerializer
+
+    def get_queryset(self):
+        return TimeSheet.objects.filter(user_id=self.request.user)
 
 
-class PerProjectStatisticsView(RetrieveAPIView):
+class HoursPerProjectStatisticsView(RetrieveAPIView):
     lookup_url_kwarg = 'sheet_pk'
-    serializer_class = PerProjectStatisticsSerializer
+    serializer_class = HoursPerProjectStatisticsSerializer
 
     def get_queryset(self):
         return TimeSheet.objects.filter(user_id=self.request.user)

@@ -1,13 +1,13 @@
 from django.urls import path
 
-from timetracker.sheets.api.views import PerProjectStatisticsView, sheets_root
+from timetracker.sheets.api.views import HoursPerProjectStatisticsView, TimeSheetListView
 
 app_name = 'sheets'
 
 urlpatterns = [
     path(
-        'per-project-statistics/<int:sheet_pk>/',
-        PerProjectStatisticsView.as_view(),
-        name='per-project-statistics'),
-    path('', sheets_root, name='root'),
+        '<int:sheet_pk>/hours-per-project-statistics/',
+        HoursPerProjectStatisticsView.as_view(),
+        name='hours-per-project-statistics'),
+    path('', TimeSheetListView.as_view(), name='root'),
 ]

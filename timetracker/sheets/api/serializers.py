@@ -3,16 +3,30 @@ from collections import OrderedDict
 from django.utils import timezone
 
 from rest_framework import serializers
+from rest_framework.reverse import reverse
 
 from timetracker.sheets.models import TimeSheet
 
 
 class TimeSheetSerializer(serializers.ModelSerializer):
+    hours_per_project_visualisation_url = serializers.SerializerMethodField()
+
     class Meta:
         model = TimeSheet
+        fields = (
+            'id',
+            'title',
+            'hours_per_project_visualisation_url',
+        )
+
+    def get_hours_per_project_visualisation_url(self, obj):
+        return reverse(
+            'api:sheets:hours-per-project-statistics',
+            kwargs={'sheet_pk': obj.pk},
+            request=self.context['request'])
 
 
-class PerProjectStatisticsSerializer(TimeSheetSerializer):
+class HoursPerProjectStatisticsSerializer(TimeSheetSerializer):
     start_date = serializers.SerializerMethodField()
     end_date = serializers.SerializerMethodField()
     projects = serializers.SerializerMethodField()
@@ -52,11 +66,11 @@ class PerProjectStatisticsSerializer(TimeSheetSerializer):
                 for day in self.get_days(obj):
                     if day.isoformat() not in projects[
                             activity.project_id]['days']:
-                        projects[activity.project_id]['days'][
-                            day.isoformat()] = {
-                                'date': day.isoformat(),
-                                'duration_seconds': 0
-                            }
+                        days_dict = projects[activity.project_id]['days']
+                        days_dict[day.isoformat()] = {
+                            'date': day.isoformat(),
+                            'duration_seconds': 0
+                        }
 
                 projects[activity.project_id]['days'][date.isoformat(
                 )]['duration_seconds'] += (activity.duration.seconds)
@@ -66,8 +80,10 @@ class PerProjectStatisticsSerializer(TimeSheetSerializer):
             project['days'] = project['days'].values()
         return projects.values()
 
-    class Meta(TimeSheetSerializer.Meta):
+    class Meta:
+        model = TimeSheet
         fields = (
+            'id',
             'start_date',
             'end_date',
             'days',
