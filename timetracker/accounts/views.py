@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth import get_user_model, login
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
@@ -20,11 +20,5 @@ class RegistrationView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-
-        # Log registered user in
-        user = authenticate(
-            username=form.cleaned_data['username'],
-            password=form.cleaned_data['password1'])
-        assert user is not None
-        login(self.request, user)
+        login(self.request, form.instance)
         return response
