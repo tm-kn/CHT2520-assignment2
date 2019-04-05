@@ -6,7 +6,7 @@ app_name = 'sheets'
 
 urlpatterns = [
     path(
-        'per-project-statistics/',
+        'per-project-statistics/<int:sheet_pk>/',
         PerProjectStatisticsView.as_view(),
         name='per-project-statistics'),
     path('', sheets_root, name='root'),
