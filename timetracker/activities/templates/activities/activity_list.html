@@ -68,7 +68,7 @@
                 {% endifchanged %}
                 <tr>
                     <td>
-                        {{ activity.start_time }}{% if activity.end_time %}- {{ activity.end_time }}{% endif %}
+                        {{ activity.start_datetime|time }}{% if activity.end_datetime %}- {{ activity.end_datetime|time }}{% endif %}
                     </td>
                     <td>{{ activity.project }}</td>
                     <td>

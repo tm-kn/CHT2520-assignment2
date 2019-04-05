@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -37,15 +36,6 @@ class Activity(models.Model):
             'project': self.project,
         }
 
-    def clean(self):
-        # Validate end datetime is not before start datetime.
-        if self.end_datetime and self.start_datetime \
-                and self.end_datetime <= self.start_datetime:
-            raise ValidationError({
-                'end_datetime':
-                [_('End datetime must be greater than the start datetime.')]
-            })
-
     @property
     def duration(self):
         """
@@ -69,21 +59,6 @@ class Activity(models.Model):
         Get a date object of a start date without time.
         """
         return self.start_datetime.date()
-
-    @property
-    def start_time(self):
-        """
-        Get a start time on its own without a date.
-        """
-        return self.start_datetime.time()
-
-    @property
-    def end_time(self):
-        """
-        Get an end time on its own without a date.
-        """
-        if self.end_datetime:
-            return self.end_datetime.time()
 
     def get_absolute_url(self):
         """
