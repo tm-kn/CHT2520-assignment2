@@ -5,6 +5,8 @@ from timetracker.api.views import root
 app_name = 'api'
 
 urlpatterns = [
-    path('sheets/', include('timetracker.sheets.api.urls')),
-    path('', root, name='root'),
+    path('v1/', include([
+        path('sheets/', include('timetracker.sheets.api.urls')),
+        path('', root, name='root'),
+    ])),
 ]
