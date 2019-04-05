@@ -125,5 +125,5 @@ Cron jobs
 
 It is advised that the following commands are run daily:
 
- * ``django-admin clearsessions``
- * ``django-admin clear_timesheet_generated_files``
+* ``django-admin clearsessions``
+* ``django-admin clear_timesheet_generated_files``
