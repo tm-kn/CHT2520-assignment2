@@ -6,6 +6,7 @@ from timetracker.home.views import HomepageView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('timetracker.api.urls')),
     path('accounts/', include('timetracker.accounts.urls')),
     path('sheets/', include('timetracker.sheets.urls')),
     path('sheets/<int:sheet_pk>/',

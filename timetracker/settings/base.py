@@ -24,7 +24,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
+
+    'rest_framework',
+
     'timetracker.activities',
+    'timetracker.api',
     'timetracker.projects',
     'timetracker.sheets.apps.SheetsConfig',
 ]
