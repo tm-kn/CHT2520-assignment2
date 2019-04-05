@@ -270,3 +270,5 @@ if 'SENTRY_DSN' in os.environ:
         pass
 
 AUTH_USER_MODEL = 'accounts.User'
+
+SITE_ID = 1
