@@ -7,6 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('projects', '0001_initial'),
         ('activities', '0003_activities_sheet'),
     ]
 

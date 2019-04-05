@@ -27,6 +27,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
+    'timetracker.accounts',
     'timetracker.activities',
     'timetracker.api',
     'timetracker.projects',
@@ -266,3 +267,5 @@ if 'SENTRY_DSN' in os.environ:
         RAVEN_CONFIG['release'] = raven.fetch_git_sha(BASE_DIR)
     except InvalidGitRepository:
         pass
+
+AUTH_USER_MODEL = 'accounts.User'
