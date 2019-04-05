@@ -42,5 +42,5 @@ curl -sSL https://deb.nodesource.com/setup_11.x | bash -
 apt-get install -y nodejs
 
 # Compile static
-su - vagrant -c "cd $PROJECT_DIR && npm i"
-su - vagrant -c "cd $PROJECT_DIR && make static"
+su - vagrant -c "cd $PROJECT_DIR && npm install"
+su - vagrant -c "cd $PROJECT_DIR && npm run build"

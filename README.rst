@@ -54,7 +54,9 @@ Compile static files
 
    vagrant ssh
    npm install
-   make static
+   npm run build
+
+To run a front-end watcher use ``npm start``.
 
 
 Run tests
