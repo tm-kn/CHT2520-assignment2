@@ -4,7 +4,8 @@ from django.urls import path
 from timetracker.sheets.views import (TimeSheetCreateView, TimeSheetDeleteView,
                                       TimeSheetExportView,
                                       TimeSheetGeneratedFileView,
-                                      TimeSheetListView, TimeSheetUpdateView)
+                                      TimeSheetListView, TimeSheetUpdateView,
+                                      TimeSheetVisualisationView)
 
 # yapf: enable
 
@@ -20,4 +21,8 @@ urlpatterns = [
         '<int:sheet_pk>/exported-file/<int:pk>/',
         TimeSheetGeneratedFileView.as_view(),
         name='exported_file'),
+    path(
+        '<int:pk>/visualisation/',
+        TimeSheetVisualisationView.as_view(),
+        name='visualisation'),
 ]

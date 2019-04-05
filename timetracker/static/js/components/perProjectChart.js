@@ -5,7 +5,7 @@ import moment from 'moment';
 async function getData(apiURL) {
     const response = await fetch(apiURL, {
         headers: {
-            'Accepted': 'application/json',
+            'Accept': 'application/json',
         },
         mode: 'same-origin',
     });
@@ -27,7 +27,7 @@ function setupChart(container, data) {
         },
 
         title: {
-            text: 'Projects per week'
+            text: null,
         },
 
         xAxis: {

@@ -50,14 +50,16 @@ class PerProjectStatisticsSerializer(TimeSheetSerializer):
                         'days': OrderedDict(),
                     }
                 for day in self.get_days(obj):
-                    if day.isoformat() not in projects[activity.project_id]['days']:
-                        projects[activity.project_id]['days'][day.isoformat()] = {
-                            'date': day.isoformat(),
-                            'duration_seconds': 0
-                        }
+                    if day.isoformat() not in projects[
+                            activity.project_id]['days']:
+                        projects[activity.project_id]['days'][
+                            day.isoformat()] = {
+                                'date': day.isoformat(),
+                                'duration_seconds': 0
+                            }
 
-                projects[activity.project_id]['days'][date.isoformat()]['duration_seconds'] += (
-                    activity.duration.seconds)
+                projects[activity.project_id]['days'][date.isoformat(
+                )]['duration_seconds'] += (activity.duration.seconds)
             date = next_day
 
         for project in projects.values():

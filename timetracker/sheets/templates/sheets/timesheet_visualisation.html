@@ -7,7 +7,7 @@
         <div class="level-left">
             <div classs="level-item">
                 <h1 class="title">
-                    {% blocktrans with sheet_name=sheet.title %}
+                    {% blocktrans with sheet_name=object.title %}
                     Statistics for &ldquo;{{ sheet_name }}&rdquo;
                     {% endblocktrans %}
                 </h1>
@@ -15,7 +15,7 @@
         </div>
         <div class="level-right">
             <div class="level-item">
-                <a class="button is-secondary" href="{% url "activities:list" sheet.pk %}">
+                <a class="button is-secondary" href="{% url "activities:list" object.pk %}">
                     {{_('Go back')}}
                 </a>
             </div>
@@ -26,7 +26,7 @@
     <div class="container">
         <div class="content">
             <h3>{{ _('Hours per project this week') }}</h3>
-            <div id="js-per-project-chart" data-api-url="{% url "api:sheets:per-project-statistics" sheet.pk %}"></div>
+            <div id="js-per-project-chart" data-api-url="{% url "api:sheets:per-project-statistics" object.pk %}"></div>
         </div>
     </div>
 </section>

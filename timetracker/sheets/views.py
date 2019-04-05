@@ -134,3 +134,8 @@ class TimeSheetGeneratedFileView(LoginRequiredMixin, CurrentSheetMixin,
         if not self.object.can_access_file(request):
             raise Http404
         return redirect(self.object.file.url)
+
+
+class TimeSheetVisualisationView(
+        LoginRequiredMixin, CurrentUserTimeSheetQuerySetMixin, DetailView):
+    template_name = "sheets/timesheet_visualisation.html"
