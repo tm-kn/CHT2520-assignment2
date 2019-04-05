@@ -3,6 +3,7 @@ import logging
 from urllib.parse import urljoin
 
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.core.files.base import ContentFile
 from django.core.mail.message import EmailMessage
 from django.db import models
@@ -44,12 +45,11 @@ class TimeSheetGeneratedFile(models.Model):
 
     def send_email_with_file_link(self):
         user = self.sheet.user
-        file_link = urljoin(settings.BASE_URL, self.get_absolute_url())
-        body = (
-            f'Hi {user},\n\n'
-            'The link to your generated CSV time sheet file is:\n'
-            f'{file_link}'
-        )
+        file_link = urljoin(f'http://{Site.objects.get_current().domain}',
+                            self.get_absolute_url())
+        body = (f'Hi {user},\n\n'
+                'The link to your generated CSV time sheet file is:\n'
+                f'{file_link}')
         EmailMessage(
             subject='Exported time sheet download link',
             body=body,

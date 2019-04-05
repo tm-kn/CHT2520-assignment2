@@ -13,5 +13,3 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 CELERY_BROKER_URL = 'redis:///5'
 
 SECURE_SSL_REDIRECT = False
-
-BASE_URL = 'http://localhost:8000/'
