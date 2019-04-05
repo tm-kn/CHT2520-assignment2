@@ -1,6 +1,9 @@
 import Highcharts from 'highcharts';
+import Exporting from 'highcharts/modules/exporting';
+import { camelizeKeys } from 'humps';
 import moment from 'moment';
 
+Exporting(Highcharts);
 
 async function getData(apiURL) {
     const response = await fetch(apiURL, {
@@ -9,7 +12,7 @@ async function getData(apiURL) {
         },
         mode: 'same-origin',
     });
-    return response.json();
+    return camelizeKeys(await response.json());
 }
 
 function getDurationFromMinutes(rawMinutes) {
@@ -27,7 +30,7 @@ function setupChart(container, data) {
         },
 
         title: {
-            text: null,
+            text: data.visualisationTitle,
         },
 
         xAxis: {
@@ -55,7 +58,7 @@ function setupChart(container, data) {
 
         series: data.projects.map(v => ({
             name: v.title,
-            data: v.days.map(v => v.duration_seconds/60),
+            data: v.days.map(v => v.durationSeconds/60),
         })),
     });
 }

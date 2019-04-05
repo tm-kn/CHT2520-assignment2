@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 from django.utils import timezone
+from django.utils.translation import ugettext as _
 
 from rest_framework import serializers
 from rest_framework.reverse import reverse
@@ -27,6 +28,7 @@ class TimeSheetSerializer(serializers.ModelSerializer):
 
 
 class HoursPerProjectStatisticsSerializer(TimeSheetSerializer):
+    visualisation_title = serializers.SerializerMethodField()
     start_date = serializers.SerializerMethodField()
     end_date = serializers.SerializerMethodField()
     projects = serializers.SerializerMethodField()
@@ -80,10 +82,14 @@ class HoursPerProjectStatisticsSerializer(TimeSheetSerializer):
             project['days'] = project['days'].values()
         return projects.values()
 
+    def get_visualisation_title(self, obj):
+        return _('Hours per project this week')
+
     class Meta:
         model = TimeSheet
         fields = (
             'id',
+            'visualisation_title',
             'start_date',
             'end_date',
             'days',
