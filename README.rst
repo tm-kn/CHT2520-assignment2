@@ -1,3 +1,4 @@
+============
 time tracker
 ============
 
@@ -47,7 +48,6 @@ Start the development server
 
 The application should be available at http://localhost:8000/.
 
-
 Compile static files
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -70,6 +70,9 @@ Run tests
 
 Deployment
 ~~~~~~~~~~
+
+New Heroku instance
+^^^^^^^^^^^^^^^^^^^
 
 This app supports deployment on Heroku with the container stack. To accomplish
 that please use the following command to create a new deployment.
@@ -115,3 +118,12 @@ that please use the following command to create a new deployment.
 
    # Push the codebase to Heroku - that should deploy the site.
    git push heroku
+
+
+Cron jobs
+^^^^^^^^^
+
+It is advised that the following commands are run daily:
+
+* ``django-admin clearsessions``
+* ``django-admin clear_timesheet_generated_files``

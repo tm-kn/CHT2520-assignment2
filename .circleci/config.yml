@@ -24,7 +24,7 @@ jobs:
       - run:
           name: compile static assets
           command: |
-            make static
+            npm run build
       - run:
           name: run tests
           command: |
